@@ -1,0 +1,1140 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Reflection.Emit;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
+
+namespace уч_Практика_Рустам
+{
+    public partial class glav : Form
+    {
+
+        public glav()
+        {
+            InitializeComponent();
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void update()
+        {
+            id = 0;
+            string a = comboBox1.Text;
+            s = a;
+            database db = new database();
+            DataTable table = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            table.Clear();
+            label1.Text = "";
+            string Glaw = "";
+            if (a == "Admin")
+                Glaw = $"select * from [Admin]";
+            else if (a == "Childrens")
+                Glaw = $"select * from [Childrens]";
+            else if (a == "group")
+                Glaw = $"select * from [groupp]";
+            else if (a == "Roditeli")
+                Glaw = $"select * from [Roditeli]";
+            else if (a == "Uslugi")
+                Glaw = $"select * from [Uslugi]";
+            else if (a == "Vospitateli")
+                Glaw = $"select * from [Vospitateli]";
+            else
+            {
+                label1.Text = "Пожалуйта, выберите таблицу";
+                return;
+            }
+            SqlCommand command = new SqlCommand(Glaw, db.getConnection());
+            adapter.SelectCommand = command;
+            adapter.Fill(table);
+            dataGridView1.DataSource = table;
+        }
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Create frmlog = new Create();
+            frmlog.label8.Text = this.comboBox1.Text;
+            frmlog.ShowDialog();
+            update();
+        }
+        string s = "";
+        private void button8_Click(object sender, EventArgs e)
+        {
+            update();
+        }
+
+        private void glav_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Create CR = new Create();
+            if (id != 0)
+            {
+                Peredak.a = 1;
+                if (s == "Admin")
+                {
+                    CR.textBox2.Text = a1;
+                    CR.textBox3.Text = a2;
+                    CR.textBox4.Text = a3;
+                    CR.textBox5.Text = a4;
+                    CR.textBox6.Text = a5;
+                    CR.textBox7.Text = a6;
+                }
+                else if (s == "Childrens")
+                {
+                    CR.textBox2.Text = a1;
+                    CR.textBox3.Text = a2;
+                    CR.textBox4.Text = a3;
+                    CR.textBox5.Text = a4;
+                    CR.textBox6.Text = Convert.ToString(a10);
+                    CR.textBox7.Text = Convert.ToString(a11);
+                }
+                else if (s == "group")
+                {
+                    CR.textBox2.Text = Convert.ToString(a10);
+                }
+                else if (s == "Roditeli")
+                {
+                    CR.textBox2.Text = a1;
+                    CR.textBox3.Text = a2;
+                    CR.textBox4.Text = a3;
+                    CR.textBox5.Text = a4;
+                }
+                else if (s == "Uslugi")
+                {
+                    CR.textBox2.Text = Convert.ToString(a10);
+                    CR.textBox3.Text = Convert.ToString(a11);
+                    CR.textBox4.Text = Convert.ToString(a12);
+                }
+                else if (s == "Vospitateli")
+                {
+                    CR.textBox2.Text = a1;
+                    CR.textBox3.Text = a2;
+                    CR.textBox4.Text = a3;
+                    CR.textBox5.Text = Convert.ToString(a10);
+                    CR.textBox6.Text = Convert.ToString(a11);
+                }
+                CR.label8.Text = this.comboBox1.Text;
+                CR.ShowDialog();
+            }
+            else { MessageBox.Show("Выберите строку, которую хотите изменить!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information); }
+            update();
+        }
+        int id = 0;
+        string a1 = "";
+        string a2 = "";
+        string a3 = "";
+        string a4 = "";
+        string a5 = "";
+        string a6 = "";
+        int a10 = 0;
+        int a11 = 0;
+        int a12 = 0;
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int selectedRow = e.RowIndex;
+            // Проверяем, что индекс строки положителен
+            if (e.RowIndex >= 0)
+            {
+                // Получаем выбранную строку
+                DataGridViewRow row = dataGridView1.Rows[selectedRow];
+                id = Convert.ToInt32(row.Cells[0].Value.ToString());
+                Peredak.Id = id;
+                if (s == "Childrens")
+                {
+
+                    a1 = row.Cells[1].Value.ToString();
+                    a2 = row.Cells[2].Value.ToString();
+                    a3 = row.Cells[3].Value.ToString();
+                    a4 = row.Cells[4].Value.ToString();
+                    a10 = Convert.ToInt32(row.Cells[5].Value.ToString());
+                    a11 = Convert.ToInt32(row.Cells[6].Value.ToString());
+                }
+                else if (s == "Admin")
+                {
+                    Peredak.log = row.Cells[5].Value.ToString();
+                    a1 = row.Cells[1].Value.ToString();
+                    a2 = row.Cells[2].Value.ToString();
+                    a3 = row.Cells[3].Value.ToString();
+                    a4 = row.Cells[4].Value.ToString();
+                    a5 = row.Cells[5].Value.ToString();
+                    a6 = row.Cells[6].Value.ToString();
+                }
+                else if (s == "group")
+                {
+                    a10 = Convert.ToInt32(row.Cells[1].Value.ToString());
+                }
+                else if (s == "Roditeli")
+                {
+                    a1 = row.Cells[1].Value.ToString();
+                    a2 = row.Cells[2].Value.ToString();
+                    a3 = row.Cells[3].Value.ToString();
+                    a4 = row.Cells[4].Value.ToString();
+                }
+                else if (s == "Uslugi")
+                {
+                    a10 = Convert.ToInt32(row.Cells[0].Value.ToString());
+                    a11 = Convert.ToInt32(row.Cells[1].Value.ToString());
+                    a12 = Convert.ToInt32(row.Cells[2].Value.ToString());
+                    Peredak.Id1 = a11;
+                }
+                else if (s == "Vospitateli")
+                {
+                    a1 = row.Cells[1].Value.ToString();
+                    a2 = row.Cells[2].Value.ToString();
+                    a3 = row.Cells[3].Value.ToString();
+                    a10 = Convert.ToInt32(row.Cells[4].Value.ToString());
+                    a11 = Convert.ToInt32(row.Cells[5].Value.ToString());
+                }
+            }
+        }
+
+        private void comboBox1_Click(object sender, EventArgs e)
+        {
+            id = 0;
+        }
+
+
+     
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            if (id == 0)
+            {
+                MessageBox.Show("Выберите строку, которую хотите удалить!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            else if (s == "Admin")
+            {
+
+                database db = new database();
+                var deleteQuery = $"delete from Admin where Id = {id}";
+                var command = new SqlCommand(deleteQuery, db.getConnection());
+                db.openConnection();
+                command.ExecuteNonQuery();
+                db.closeConnection();
+
+            }
+            else if (s == "Childrens")
+            {
+                string aaa = $"select Id_childrens from [Uslugi] where Id_childrens = '{id}' ";
+                SqlDataAdapter adapter11 = new SqlDataAdapter();
+                DataTable table11 = new DataTable();
+                database db = new database();
+                SqlCommand commanqdw = new SqlCommand(aaa, db.getConnection());
+                adapter11.SelectCommand = commanqdw;
+                adapter11.Fill(table11);
+
+                if (table11.Rows.Count >= 1)
+                {
+                    MessageBox.Show("Она связана!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                else
+                {
+                    var deleteQuery = $"delete from Childrens where Id = {id}";
+                    var command = new SqlCommand(deleteQuery, db.getConnection());
+                    db.openConnection();
+                    command.ExecuteNonQuery();
+                    db.closeConnection();
+
+                }
+                
+            }
+            else if (s == "group")
+            {
+                SqlDataAdapter adapter11 = new SqlDataAdapter();
+                SqlDataAdapter adapter1 = new SqlDataAdapter();
+                DataTable table11 = new DataTable();
+                DataTable table1 = new DataTable();
+                database db = new database();
+                string Glaw = $"select Lastname from [Vospitateli] where Id_groupp = '{id}' ";
+                string Glaw1 = $"select Lastname from [Childrens] where Id_groupp = '{id}' ";
+                SqlCommand commanqd = new SqlCommand(Glaw, db.getConnection());
+                adapter11.SelectCommand = commanqd;
+                adapter11.Fill(table11);
+                SqlCommand commanqd1 = new SqlCommand(Glaw1, db.getConnection());
+                adapter1.SelectCommand = commanqd1;
+                adapter1.Fill(table1);
+                if (table11.Rows.Count >= 1 || table1.Rows.Count >= 1)
+                {
+                    MessageBox.Show("Она связана!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                else {
+                   
+                    DataTable table = new DataTable();
+                    SqlDataAdapter adapter = new SqlDataAdapter();
+                    var deleteQuery = $"delete from groupp where Id = {id}";
+                    var command = new SqlCommand(deleteQuery, db.getConnection());
+                    db.openConnection();
+                    command.ExecuteNonQuery();
+                    db.closeConnection();
+                }
+            }
+            else if (s == "Roditeli")
+            {
+                SqlDataAdapter adapter11 = new SqlDataAdapter();
+                SqlDataAdapter adapter1 = new SqlDataAdapter();
+                DataTable table11 = new DataTable();
+                DataTable table1 = new DataTable();
+                database db = new database();
+                string Glaw = $"select Id_childrens from [Uslugi] where Id_roditeli = '{id}' ";
+                string Glaw1 = $"select Lastname from [Childrens] where Id_roditeli = '{id}' ";
+                SqlCommand commanqd = new SqlCommand(Glaw, db.getConnection());
+                adapter11.SelectCommand = commanqd;
+                adapter11.Fill(table11);
+                SqlCommand commanqd1 = new SqlCommand(Glaw1, db.getConnection());
+                adapter1.SelectCommand = commanqd1;
+                adapter1.Fill(table1);
+                if (table11.Rows.Count >= 1 || table1.Rows.Count >= 1)
+                {
+                    MessageBox.Show("Она связана!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                else
+                {
+                   
+                    DataTable table = new DataTable();
+                    SqlDataAdapter adapter = new SqlDataAdapter();
+                    var deleteQuery = $"delete from Roditeli where Id = {id}";
+                    var command = new SqlCommand(deleteQuery, db.getConnection());
+                    db.openConnection();
+                    command.ExecuteNonQuery();
+                    db.closeConnection();
+                }
+            }
+            else if (s == "Uslugi")
+            {
+                database db = new database();
+                DataTable table = new DataTable();
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                var deleteQuery = $"delete from Admin where Id_childrens = {a10} and Id_roditeli = {a11} and Summa = {a12}";
+                var command = new SqlCommand(deleteQuery, db.getConnection());
+                db.openConnection();
+                command.ExecuteNonQuery();
+                db.closeConnection();
+            }
+            else if (s == "Vospitateli")
+            {
+                database db = new database();
+                DataTable table = new DataTable();
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                var deleteQuery = $"delete from Vospitateli where Id = {id}";
+                var command = new SqlCommand(deleteQuery, db.getConnection());
+                db.openConnection();
+                command.ExecuteNonQuery();
+                db.closeConnection();
+
+            }
+            update();
+        }
+
+        private void glav_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            log forms = new log();
+            forms.Show();
+            Close();
+        }
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace уч_Практика_Рустам
+{
+    public partial class log : Form
+    {
+        public log()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string login = textBox1.Text;
+            string password = textBox2.Text;
+            if(login == "" || password == "" )
+            {
+                label2.Text = "Введите логин или пароль";
+                return;
+            }
+            database db = new database();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            DataTable table = new DataTable();
+            string Glaw = $"select Login, Password, Post from [Admin] where Login = '{login}' and  Password = '{password}'";
+            SqlCommand command = new SqlCommand(Glaw, db.getConnection());
+            adapter.SelectCommand = command;
+            adapter.Fill(table);
+            if (table.Rows.Count == 1)
+            {
+               
+                    string s = table.Rows[0][2].ToString();
+                    if (s == "glav")
+                    {
+                        glav an = new glav();
+                        this.Hide();
+                        an.Show();
+                    }
+                    if (s == "byh")
+                    {
+                    byh pm = new byh();
+                        this.Hide();
+                        pm.Show();
+                    }
+
+                
+          
+
+
+
+            }
+            else
+            {
+                label2.Text = "Неправильно ввели логин или пароль";
+
+            }
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Drawing.Printing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace уч_Практика_Рустам
+{
+    public partial class pechat : Form
+    {
+        public pechat()
+        {
+            InitializeComponent();
+            printDocument = new PrintDocument();
+            printDocument.PrintPage += PrintDocument_PrintPage;
+        }
+
+        private void pechat_Load(object sender, EventArgs e)
+        {
+
+            database db = new database();
+            DataTable table = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            table.Clear();
+                 string Glaw = $"select Lastname, Name, Patronymic from [Roditeli] where Id = '{Peredak.Id_rod}'";
+
+            SqlCommand command = new SqlCommand(Glaw, db.getConnection());
+            adapter.SelectCommand = command;
+            adapter.Fill(table);
+
+            
+            DataTable table1 = new DataTable();
+            SqlDataAdapter adapter1 = new SqlDataAdapter();
+            table1.Clear();
+            string Glaw1 = $"select Lastname, Name, Patronymic from [Childrens] where Id = '{Peredak.Id_reb}'";
+
+            SqlCommand command1 = new SqlCommand(Glaw1, db.getConnection());
+            adapter1.SelectCommand = command1;
+            adapter1.Fill(table1);
+
+            label1.Text = $"Родитель: {table.Rows[0][0].ToString()} {table.Rows[0][1].ToString()} {table.Rows[0][2].ToString()}";
+            label2.Text = $"Ребенок: {table1.Rows[0][0].ToString()} {table1.Rows[0][1].ToString()} {table1.Rows[0][2].ToString()}";
+            label3.Text = $"Сумма выплаты: {Peredak.sum} руб.";
+            label4.Text = $"Дата печати: {DateTime.Now.Day}.{DateTime.Now.Month}.{DateTime.Now.Year}   {DateTime.Now.Hour}:{DateTime.Now.Minute}";
+        }
+        private PrintDocument printDocument;
+        private void button1_Click(object sender, EventArgs e)
+        {
+            PrintDialog printDialog = new PrintDialog();
+            printDocument.DefaultPageSettings.PaperSize = new PaperSize("A4", 1160, 1620); // Размер страницы A10
+            printDialog.Document = printDocument;
+
+            if (printDialog.ShowDialog() == DialogResult.OK)
+            {
+                printDocument.Print();
+                Hide();
+            }
+        }
+        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            // Определение размера страницы A4
+            float pageWidth = e.PageSettings.PrintableArea.Width;
+            float pageHeight = e.PageSettings.PrintableArea.Height;
+
+            // Установка шрифта для печати
+            Font font = new Font("Microsoft Sans Serif", 14);
+
+            // Печать всех Label и TextBox
+            foreach (Control control in Controls)
+            {
+                // Проверка типа элемента управления
+                if (control is Label || control is System.Windows.Forms.TextBox)
+                {
+                    // Определение координат элемента на форме
+                    float x = control.Left * pageWidth / Width;
+                    float y = control.Top * pageHeight / Height;
+                    string text = "";
+                    // Определение текста для печати
+                    if (control is Label)
+                    {
+                        text = ((Label)control).Text;
+                    }
+                    else if (control is System.Windows.Forms.TextBox)
+                    {
+                        text = ((System.Windows.Forms.TextBox)control).Text;
+                    }
+
+                    // Печать элемента управления
+                    e.Graphics.DrawString(text, font, Brushes.Black, x, y);
+                }
+                else if (control is PictureBox)
+                {
+                    PictureBox pictureBox = (PictureBox)control;
+                    Bitmap bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
+                    pictureBox.DrawToBitmap(bmp, pictureBox.ClientRectangle);
+                    float x = control.Left * pageWidth / Width;
+                    float y = control.Top * pageHeight / Height;
+
+                    e.Graphics.DrawImage(bmp, x, y);
+                }
+            }
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace уч_Практика_Рустам
+{
+    static class Peredak
+    {
+       public static int a = 0;
+       public static int Id = 0;
+       public static int Id1 = 0;
+        public static int Id_rod = 0;
+        public static int Id_reb = 0;
+        public static int sum = 0;
+        internal static string log = "";
+
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace уч_Практика_Рустам
+{
+    internal static class Program
+    {
+        /// <summary>
+        /// Главная точка входа для приложения.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new log());
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data.SqlClient;
+
+namespace уч_Практика_Рустам
+{
+    internal class database
+    {
+        SqlConnection con = new SqlConnection(@"Data Source=DAMIR;Initial Catalog=detsad;Integrated Security=True");
+
+        
+        public void openConnection()
+        {
+            if (con.State == System.Data.ConnectionState.Closed)
+            {
+                con.Open();
+            }
+        }
+        public void closeConnection()
+        {
+            if (con.State == System.Data.ConnectionState.Open)
+            {
+                con.Close();
+            }
+        }
+        public SqlConnection getConnection()
+        {
+            return con;
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace уч_Практика_Рустам
+{
+    public partial class Create : Form
+    {
+        public Create()
+        {
+            InitializeComponent();
+        }
+
+        private void Create_Load(object sender, EventArgs e)
+        {
+            if (label8.Text == "Admin")
+            {
+
+                label2.Text = "lastname";
+                label3.Text = "Name";
+                label4.Text = "Patronymic";
+                label5.Text = "Post";
+                label6.Text = "Login";
+                label7.Text = "Password";
+                dateTimePicker1.Visible = false;
+
+            }
+            else if (label8.Text == "group")
+            {
+
+                label2.Text = "number group";
+                label3.Visible = false;
+                textBox3.Visible = false;
+                label4.Visible = false;
+                textBox4.Visible = false;
+                label5.Visible = false;
+                textBox5.Visible = false;
+                label6.Visible = false;
+                textBox6.Visible = false;
+                label7.Visible = false;
+                textBox7.Visible = false;
+                dateTimePicker1.Visible = false;
+            }
+            else if (label8.Text == "Childrens")
+            {
+
+                label2.Text = "Lastname";
+                label3.Text = "Name";
+                label4.Text = "Patronymic";
+                label5.Text = "Birthsday";
+                label6.Text = "Id_roditeli";
+                label7.Text = "Id_group";
+                dateTimePicker1.Visible = true;
+                textBox5.Visible = false;
+            }
+            else if (label8.Text == "Roditeli")
+            {
+
+                label2.Text = "Lastname";
+                label3.Text = "Name";
+                label4.Text = "Patronymic";
+                label5.Text = "Number";
+                label6.Visible = false;
+                textBox6.Visible = false;
+                label7.Visible = false;
+                textBox7.Visible = false;
+                dateTimePicker1.Visible = false;
+
+            }
+            else if (label8.Text == "Uslugi")
+            {
+
+                label2.Text = "Id_childrens";
+                label3.Text = "Id_roditeli";
+                label4.Text = "Summa";
+                label5.Visible = false;
+                textBox5.Visible = false;
+                label6.Visible = false;
+                textBox6.Visible = false;
+                label7.Visible = false;
+                textBox7.Visible = false;
+                dateTimePicker1.Visible = false;
+
+            }
+            else if (label8.Text == "Vospitateli")
+            {
+
+                label2.Text = "lastname";
+                label3.Text = "Name";
+                label4.Text = "Patronymic";
+                label5.Text = "Zp";
+                label6.Text = "Id_group";
+                label7.Visible = false;
+                textBox7.Visible = false;
+                dateTimePicker1.Visible = false;
+
+            }
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+        database database = new database();
+        private void button1_Click(object sender, EventArgs e)
+        {
+            database.openConnection();
+            string a2 = textBox2.Text;
+            string a3 = textBox3.Text;
+            string a4 = textBox4.Text;
+            string a5 = textBox5.Text;
+            string a55 = dateTimePicker1.Text;
+            string a6 = textBox6.Text;
+            string a7 = textBox7.Text;
+            SqlDataAdapter adapter11 = new SqlDataAdapter();
+            SqlDataAdapter adapter1 = new SqlDataAdapter();
+            DataTable table11 = new DataTable();
+            DataTable table1 = new DataTable();
+
+            if (label8.Text == "Childrens")
+            {
+                
+                int b6;
+                int b7;
+                if (int.TryParse(textBox6.Text, out b6) && int.TryParse(textBox7.Text, out b7))
+                {
+                    string Glaw = $"select Id from [Roditeli] where Id = '{b6}' ";
+                    string Glaw1 = $"select Id from [Groupp] where Id = '{b7}' ";
+                    SqlCommand commanqd = new SqlCommand(Glaw, database.getConnection());
+                    adapter11.SelectCommand = commanqd;
+                    adapter11.Fill(table11);
+                    SqlCommand commanqd1 = new SqlCommand(Glaw1, database.getConnection());
+                    adapter1.SelectCommand = commanqd1;
+                    adapter1.Fill(table1);
+                    if (table11.Rows.Count == 1 && table1.Rows.Count == 1)
+                    {
+                        if (Peredak.a == 1)
+                        {
+
+                            var addQuery = $"UPDATE Childrens SET Lastname='{a2}', Name='{a3}', Patronymic='{a4}',Birthsday='{a55}',Id_roditeli='{a6}',Id_groupp='{a7}' WHERE Id={Peredak.Id} ";
+                            var command = new SqlCommand(addQuery, database.getConnection());
+                            command.ExecuteNonQuery();
+                            MessageBox.Show("Запись успешно изменена", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            var addQuery = $"insert into Childrens (Lastname, Name, Patronymic, Birthsday, Id_roditeli, Id_groupp) values ('{a2}','{a3}', '{a4}', '{a55}', '{b6}', '{b7}')";
+                            var command = new SqlCommand(addQuery, database.getConnection());
+                            command.ExecuteNonQuery();
+                            MessageBox.Show("Запись успешно создана", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Запись не создана", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Id_roditeli и Id_groupp должны иметь цифровой формат", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            else if (label8.Text == "Uslugi")
+            {
+                int b2;
+                int b3;
+                int b4;
+                if (int.TryParse(textBox2.Text, out b2) && int.TryParse(textBox3.Text, out b3) && int.TryParse(textBox4.Text, out b4))
+                {
+                    string Glaw = $"select Lastname from [Childrens] where Id = '{b2}' ";
+                    string Glaw1 = $"select Id from [Roditeli] where Id = '{b3}' ";
+                    SqlCommand commanqd = new SqlCommand(Glaw, database.getConnection());
+                    adapter11.SelectCommand = commanqd;
+                    adapter11.Fill(table11);
+                    SqlCommand commanqd1 = new SqlCommand(Glaw1, database.getConnection());
+                    adapter1.SelectCommand = commanqd1;
+                    adapter1.Fill(table1);
+                    if (table11.Rows.Count == 1 || table1.Rows.Count == 1)
+                    {
+                        if (Peredak.a==1)
+                        {
+                            var addQuery = $"UPDATE Uslugi SET Id_childrens='{a2}', Id_roditeli='{a3}', Summa='{a4}' WHERE Id_childrens={Peredak.Id} and Id_roditeli={Peredak.Id1}";
+                            var command = new SqlCommand(addQuery, database.getConnection());
+                            command.ExecuteNonQuery();
+                            MessageBox.Show("Запись успешно изменена", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                        var addQuery = $"insert into Uslugi (Id_childrens, Id_roditeli, Summa) values ('{b2}','{b3}', '{b4}')";
+                        var command = new SqlCommand(addQuery, database.getConnection());
+                        command.ExecuteNonQuery();
+                        MessageBox.Show("Запись успешно создана", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Запись не создана", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Id_childrens, Id_roditeli и Summa должны иметь цифровой формат", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+
+            else if (label8.Text == "Vospitateli")
+            {
+                int b5;
+                int b6;
+
+                if (int.TryParse(textBox5.Text, out b5) && int.TryParse(textBox6.Text, out b6))
+                {
+                    string Glaw1 = $"select Id from [groupp] where Id = '{b6}' ";
+                    SqlCommand commanqd1 = new SqlCommand(Glaw1, database.getConnection());
+                    adapter1.SelectCommand = commanqd1;
+                    adapter1.Fill(table1);
+                    if (table1.Rows.Count == 1)
+                    {
+                        if (Peredak.a == 1)
+                        {
+                            var addQuery = $"UPDATE Vospitateli SET Lastname='{a2}', Name='{a3}', Patronymic='{a4}', Zp='{a5}',Id_groupp='{a6}'  WHERE Id={Peredak.Id}";
+                            var command = new SqlCommand(addQuery, database.getConnection());
+                            command.ExecuteNonQuery();
+                            MessageBox.Show("Запись успешно изменена", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            var addQuery = $"insert into Vospitateli (Lastname, Name, Patronymic, Zp, Id_groupp) values ('{a2}','{a3}', '{a4}', '{b5}', '{b6}')";
+                            var command = new SqlCommand(addQuery, database.getConnection());
+                            command.ExecuteNonQuery();
+                            MessageBox.Show("Запись успешно создана", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Запись не создана", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Id_childrens, Id_roditeli и Summa должны иметь цифровой формат", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            else
+            {
+                var addQuery = "";
+                if (label8.Text == "Admin")
+                {
+                    if (Peredak.a == 1)
+                    {
+                        
+                             addQuery = $"UPDATE Admin SET Lastname='{a2}', Name='{a3}', Patronymic='{a4}', Post='{a5}',Login='{a6}',Password='{a7}'  WHERE Id={Peredak.Id}";
+                       
+                        
+                    }
+                    else
+                        addQuery = $"insert into Admin (Lastname, Name, Patronymic, Post, Login, Password) values ('{a2}','{a3}', '{a4}', '{a5}', '{a6}','{a7}')";
+                }
+
+                else if (label8.Text == "group")
+                {
+                    if (Peredak.a == 1)
+                        addQuery = $"UPDATE groupp SET Number_groupp='{a2}'  WHERE Id={Peredak.Id}";
+                    else
+                        addQuery = $"insert into groupp (Number_groupp) values ('{a2}')";
+                }
+                else if (label8.Text == "Roditeli")
+                {
+                    if (a5.Length <= 10 || a5.Length >= 12)
+                    {
+                        MessageBox.Show("Номер = 11 цифрам", "ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    if (Peredak.a == 1)
+                        addQuery = $"UPDATE Roditeli SET Lastname='{a2}', Name='{a3}', Patronymic='{a4}', Number='{a5}'  WHERE Id={Peredak.Id}";
+                    else
+                        addQuery = $"insert into Roditeli (Lastname, Name, Patronymic, Number) values ('{a2}','{a3}', '{a4}', '{a5}')";
+                }
+
+
+                string Glaw1 = $"select Id from [Admin] where Login = '{a6}' ";
+                SqlCommand commanqd1 = new SqlCommand(Glaw1, database.getConnection());
+                adapter1.SelectCommand = commanqd1;
+                adapter1.Fill(table1);
+                if (table1.Rows.Count == 1 && Peredak.log != a6)
+                {
+                    MessageBox.Show("Такой логин уже используется", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else
+                {
+                    var command = new SqlCommand(addQuery, database.getConnection());
+                command.ExecuteNonQuery();
+                MessageBox.Show("Запись успешно создана", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                }
+            }
+            database.closeConnection();
+
+
+
+
+
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Reflection.Emit;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
+namespace уч_Практика_Рустам
+{
+    public partial class byh : Form
+    {
+        public byh()
+        {
+            InitializeComponent();
+        }
+
+        public int id_rod;
+        int id_reb;
+            database db = new database();
+        private void Form2_Load(object sender, EventArgs e)
+        {
+           
+            DataTable table = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            table.Clear();
+        
+               string Glaw = $"select * from [Roditeli]";
+        
+            SqlCommand command = new SqlCommand(Glaw, db.getConnection());
+            adapter.SelectCommand = command;
+            adapter.Fill(table);
+            dataGridView1.DataSource = table;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int selectedRow = e.RowIndex;
+            id_reb = 0;
+            if (e.RowIndex >= 0)
+            {
+                
+                DataGridViewRow row = dataGridView1.Rows[selectedRow];
+                id_rod = Convert.ToInt32(row.Cells[0].Value.ToString());
+
+            }
+            DataTable table = new DataTable();
+            database db = new database();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            dataGridView3.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            table.Clear();
+            string zadan = $"SELECT Childrens.Id, Childrens.Lastname, Childrens.Name, Childrens.Patronymic, Childrens.Birthsday, Childrens.id_groupp  FROM Childrens  WHERE Id_roditeli = {id_rod}; ";
+            SqlCommand command = new SqlCommand(zadan, db.getConnection());
+            adapter.SelectCommand = command;
+            adapter.Fill(table);
+            dataGridView3.DataSource = table;
+
+            DataTable table1 = new DataTable();
+            
+            SqlDataAdapter adapter1 = new SqlDataAdapter();
+            dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            table1.Clear();
+            string zadan1 = $"SELECT Id_childrens, Summa FROM Uslugi  WHERE Id_roditeli = {id_rod}; ";
+            SqlCommand command1 = new SqlCommand(zadan1, db.getConnection());
+            adapter1.SelectCommand = command1;
+            adapter1.Fill(table1);
+            dataGridView2.DataSource = table1;
+        }
+
+        private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (id_rod == 0 || id_reb == 0)
+            {
+                MessageBox.Show("Выберите ребенка!", "надо", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            db.openConnection();
+            SqlCommand insertCommand = new SqlCommand($"insert into Uslugi (Id_childrens, Id_roditeli, Summa) values ({id_reb}, '{id_rod}', '{textBox1.Text}')", db.getConnection());
+            insertCommand.ExecuteNonQuery();
+            DataTable table1 = new DataTable();
+
+            SqlDataAdapter adapter1 = new SqlDataAdapter();
+            dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            table1.Clear();
+            string zadan1 = $"SELECT Id_childrens, Summa FROM Uslugi  WHERE Id_roditeli = {id_rod}; ";
+            SqlCommand command1 = new SqlCommand(zadan1, db.getConnection());
+            adapter1.SelectCommand = command1;
+            adapter1.Fill(table1);
+            dataGridView2.DataSource = table1;
+
+        }
+
+        private void dataGridView3_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int selectedRow = e.RowIndex;
+            
+            if (e.RowIndex >= 0)
+            {
+
+                DataGridViewRow row = dataGridView3.Rows[selectedRow];
+                id_reb = Convert.ToInt32(row.Cells[0].Value.ToString());
+
+            }
+        }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+ char number = e.KeyChar;
+
+            if (!Char.IsDigit(number))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void dataGridView2_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Хотите распечатать?", "Печать", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                Peredak.Id_rod = id_rod;
+                int selectedRow = e.RowIndex;
+                if (e.RowIndex >= 0)
+                {
+
+                    DataGridViewRow row = dataGridView2.Rows[selectedRow];
+                    Peredak.Id_reb = Convert.ToInt32(row.Cells[0].Value.ToString());
+                    Peredak.sum = Convert.ToInt32(row.Cells[1].Value.ToString());
+
+                }
+
+                pechat pechat = new pechat();
+                pechat.ShowDialog();
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                //do something else
+            }
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            log forms = new log();
+            forms.Show();
+            Close();
+        }
+
+        private void Form2_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+    }
+}
